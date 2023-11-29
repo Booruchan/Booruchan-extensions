@@ -23,7 +23,7 @@ subprojects {
 
     publishing {
         publications {
-            register("release", MavenPublication::class) {
+            register<MavenPublication>("maven") {
                 // Library Package Name
                 // NOTE : Different GroupId For Each Library / Module, So That Each Library Is Not Overwritten
                 groupId = "org.booruchan.extensions"
@@ -34,6 +34,10 @@ subprojects {
 
                 // Version Library Name (Example : "1.0.0")
                 version = subprojectVersion
+
+                afterEvaluate {
+                    from(components["java"])
+                }
             }
         }
     }
