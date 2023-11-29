@@ -6,12 +6,12 @@ buildscript {
 
 plugins {
     kotlin("jvm") version "1.9.21"
+    `maven-publish`
 }
 
 allprojects {
     group = "org.booruchan.extensions"
 }
-
 
 subprojects {
     val subprojectVersion = this.version.toString()
