@@ -6,7 +6,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version ("7.1.1")
 }
 
-group = "org.booruchan.extension.sdk"
 version = "0.3.4"
 
 repositories {

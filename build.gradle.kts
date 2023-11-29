@@ -1,27 +1,40 @@
 plugins {
     kotlin("jvm") version "1.9.21"
-    application
+    `maven-publish`
 }
 
-group = "org.booruchan"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+allprojects {
+    group = "org.booruchan.extensions"
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
-}
+subprojects {
+    val subprojectVersion = this.version.toString()
+    val subprojectArtifact = this.name
 
-tasks.test {
-    useJUnitPlatform()
-}
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "maven-publish")
 
-kotlin {
-    jvmToolchain(17)
-}
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        withSourcesJar()
+        withJavadocJar()
+    }
 
-application {
-    mainClass.set("MainKt")
+    publishing {
+        publications {
+            register("release", MavenPublication::class) {
+                // Library Package Name
+                // NOTE : Different GroupId For Each Library / Module, So That Each Library Is Not Overwritten
+                groupId = "org.booruchan.extensions"
+
+                // Library Name / Module Name
+                // NOTE : Different ArtifactId For Each Library / Module, So That Each Library Is Not Overwritten
+                artifactId = subprojectArtifact
+
+                // Version Library Name (Example : "1.0.0")
+                version = subprojectVersion
+            }
+        }
+    }
 }
