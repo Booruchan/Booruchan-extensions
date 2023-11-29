@@ -16,6 +16,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(kotlin("stdlib-jdk8"))
+
+    implementation("com.github.Booruchan:Booruchan-extensions:extension-sdk:3a7810c166")
 }
 
 tasks.test {

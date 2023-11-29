@@ -1,11 +1,17 @@
+buildscript {
+    dependencies {
+        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
+    }
+}
+
 plugins {
     kotlin("jvm") version "1.9.21"
-    `maven-publish`
 }
 
 allprojects {
     group = "org.booruchan.extensions"
 }
+
 
 subprojects {
     val subprojectVersion = this.version.toString()
