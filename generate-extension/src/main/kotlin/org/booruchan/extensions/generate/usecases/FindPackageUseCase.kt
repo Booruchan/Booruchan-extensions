@@ -4,7 +4,6 @@ import java.io.File
 
 interface FindPackageUseCase {
     operator fun invoke(sourceClassFile: File): String
-
 }
 
 class FindPackageUseCaseImpl(

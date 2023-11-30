@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":extension-sdk"))
+    implementation(project(":extension-lolibooru"))
+
     implementation("com.samskivert:jmustache:1.15")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

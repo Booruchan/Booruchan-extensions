@@ -1,5 +1,6 @@
 package org.booruchan.extensions.generate
 
+import org.booruchan.extension.sdk.Source
 import org.booruchan.extensions.generate.codegen.AndroidCodegen
 import org.booruchan.extensions.generate.codegen.Codegen
 import org.booruchan.extensions.generate.codegen.CodegenContext
@@ -38,24 +39,34 @@ class Main(
     operator fun invoke() {
         // Get project directory
         val projectDirectory = File(System.getProperty("user.dir")!!)
+
         // Find all project modules
         val projectModules = findProjectModules(projectDirectory)
+
         // Find all files with Source class
         val sourceClassFiles = projectModules.map { projectModuleFile ->
             findSourceClassFile(projectModuleFile)
         }
+
         // Build contexts for code generation
         val contexts = sourceClassFiles.filterNotNull().map { sourceClassFile ->
             buildCodegenContext(sourceClassFile)
         }
+
         // Generate code for the specific codegen with provided context
         contexts.forEach { context -> codegen(context) }
     }
 
-    private fun buildCodegenContext(sourceClassFile: File) = CodegenContext(
-        source = sourceClassFile,
-        root = findSourceRootFile(sourceClassFile),
-        `package` = findPackage(sourceClassFile),
-    )
+    private fun buildCodegenContext(sourceClassFile: File): CodegenContext {
+        val sourcePackage = findPackage(sourceClassFile)
+        val sourceClass = Class.forName("$sourcePackage.${sourceClassFile.nameWithoutExtension}")
+        val sourceInstance = sourceClass.getDeclaredConstructor().newInstance() as Source
 
+        return CodegenContext(
+            sourceClassDirectory = sourceClassFile,
+            moduleRootDirectory = findSourceRootFile(sourceClassFile),
+            sourcePackage = sourcePackage,
+            sourceTitle = sourceInstance.title,
+        )
+    }
 }

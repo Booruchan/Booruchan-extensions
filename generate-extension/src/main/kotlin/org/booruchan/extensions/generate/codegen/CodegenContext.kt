@@ -3,7 +3,11 @@ package org.booruchan.extensions.generate.codegen
 import java.io.File
 
 data class CodegenContext(
-    val root: File,
-    val source: File,
-    val `package`: String
+    val moduleRootDirectory: File,
+    /** Source interface implementation file */
+    val sourceClassDirectory: File,
+    /** Source package that will be applied to extension */
+    val sourcePackage: String,
+    /** Source title */
+    val sourceTitle: String,
 )
