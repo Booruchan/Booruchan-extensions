@@ -4,6 +4,7 @@ import org.booruchan.extension.sdk.Source
 import org.booruchan.extensions.generate.codegen.AndroidCodegen
 import org.booruchan.extensions.generate.codegen.Codegen
 import org.booruchan.extensions.generate.codegen.CodegenContext
+import org.booruchan.extensions.generate.template.MustacheTemplateInflater
 import org.booruchan.extensions.generate.usecases.FindPackageUseCase
 import org.booruchan.extensions.generate.usecases.FindPackageUseCaseImpl
 import org.booruchan.extensions.generate.usecases.FindProjectModulesUseCase
@@ -25,7 +26,10 @@ fun main() {
         findSourceClassFile = findSourceClassFiles,
         findSourceRootFile = findSourceRootFile,
         findPackage = findPackage,
-        codegen = AndroidCodegen(findProjectModules = findProjectModules),
+        codegen = AndroidCodegen(
+            findProjectModules = findProjectModules,
+            templateInflater = MustacheTemplateInflater(),
+        ),
     )()
 }
 
@@ -67,6 +71,8 @@ class Main(
             moduleRootDirectory = findSourceRootFile(sourceClassFile),
             sourcePackage = sourcePackage,
             sourceTitle = sourceInstance.title,
+            sourceClassName = sourceClassFile.nameWithoutExtension,
+            sourceId = sourceInstance.id,
         )
     }
 }

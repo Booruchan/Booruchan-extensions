@@ -10,4 +10,8 @@ data class CodegenContext(
     val sourcePackage: String,
     /** Source title */
     val sourceTitle: String,
+    /** Name of the class where Source interface implemented*/
+    val sourceClassName: String,
+
+    val sourceId: String,
 )
