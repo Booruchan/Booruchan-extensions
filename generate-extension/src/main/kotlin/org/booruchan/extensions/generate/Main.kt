@@ -1,17 +1,15 @@
 package org.booruchan.extensions.generate
 
-import org.booruchan.extension.sdk.Source
 import org.booruchan.extensions.generate.codegen.AndroidCodegen
 import org.booruchan.extensions.generate.codegen.Codegen
-import org.booruchan.extensions.generate.codegen.CodegenContext
+import org.booruchan.extensions.generate.codegen.CodegenContextFactory
+import org.booruchan.extensions.generate.command.WindowsGradleAssembleDebugCommand
 import org.booruchan.extensions.generate.template.MustacheTemplateInflater
-import org.booruchan.extensions.generate.usecases.FindPackageUseCase
 import org.booruchan.extensions.generate.usecases.FindPackageUseCaseImpl
 import org.booruchan.extensions.generate.usecases.FindProjectModulesUseCase
 import org.booruchan.extensions.generate.usecases.FindProjectModulesUseCaseImpl
 import org.booruchan.extensions.generate.usecases.FindSourceClassFileUseCase
 import org.booruchan.extensions.generate.usecases.FindSourceClassFileUseCaseRegexp
-import org.booruchan.extensions.generate.usecases.FindSourceRootFileUseCase
 import org.booruchan.extensions.generate.usecases.FindSourceRootFileUseCaseImpl
 import java.io.File
 
@@ -24,8 +22,11 @@ fun main() {
     Main(
         findProjectModules = findProjectModules,
         findSourceClassFile = findSourceClassFiles,
-        findSourceRootFile = findSourceRootFile,
-        findPackage = findPackage,
+        codegenContextFactory = CodegenContextFactory(
+            findProjectModules = findProjectModules,
+            findSourceRootFile = findSourceRootFile,
+            findPackage = findPackage,
+        ),
         codegen = AndroidCodegen(
             findProjectModules = findProjectModules,
             templateInflater = MustacheTemplateInflater(),
@@ -36,8 +37,7 @@ fun main() {
 class Main(
     private val findProjectModules: FindProjectModulesUseCase,
     private val findSourceClassFile: FindSourceClassFileUseCase,
-    private val findSourceRootFile: FindSourceRootFileUseCase,
-    private val findPackage: FindPackageUseCase,
+    private val codegenContextFactory: CodegenContextFactory,
     private val codegen: Codegen,
 ) {
     operator fun invoke() {
@@ -54,25 +54,16 @@ class Main(
 
         // Build contexts for code generation
         val contexts = sourceClassFiles.filterNotNull().map { sourceClassFile ->
-            buildCodegenContext(sourceClassFile)
+            codegenContextFactory.createCodegenContext(sourceClassFile)
         }
 
         // Generate code for the specific codegen with provided context
         contexts.forEach { context -> codegen(context) }
+
+        // Generate code for the specific codegen with provided context
+        contexts.forEach { context ->
+            WindowsGradleAssembleDebugCommand()(context.buildDirectory)
+        }
     }
 
-    private fun buildCodegenContext(sourceClassFile: File): CodegenContext {
-        val sourcePackage = findPackage(sourceClassFile)
-        val sourceClass = Class.forName("$sourcePackage.${sourceClassFile.nameWithoutExtension}")
-        val sourceInstance = sourceClass.getDeclaredConstructor().newInstance() as Source
-
-        return CodegenContext(
-            sourceClassDirectory = sourceClassFile,
-            moduleRootDirectory = findSourceRootFile(sourceClassFile),
-            sourcePackage = sourcePackage,
-            sourceTitle = sourceInstance.title,
-            sourceClassName = sourceClassFile.nameWithoutExtension,
-            sourceId = sourceInstance.id,
-        )
-    }
 }

@@ -10,17 +10,14 @@ class AndroidCodegen(
     private val templateInflater: TemplateInflater,
 ) : Codegen {
     override fun invoke(context: CodegenContext) {
-        // get project directory
-        val projectDirectory = File(System.getProperty("user.dir")!!)
+        val currentModuleBuildDirectory = context.buildDirectory
 
-        // Find current module directory
-        val currentModuleDirectory = findProjectModules(projectDirectory).find {
-            it.name == CurrentModuleTitle
+        // Clear current working directory from previous actions
+        if (currentModuleBuildDirectory.exists()) {
+            if (!currentModuleBuildDirectory.deleteRecursively()) {
+                throw IOException("Couldn't clear directory: $currentModuleBuildDirectory")
+            }
         }
-
-        // Find build directory and create subdirectories
-        val templatePath = "build${File.separator}templates${File.separator}android${File.separator}${File.separator}${context.sourceId}"
-        val currentModuleBuildDirectory = File(currentModuleDirectory, templatePath)
 
         // Create current working directory
         if (!currentModuleBuildDirectory.exists()) {
@@ -51,11 +48,13 @@ class AndroidCodegen(
         }
 
         // Copy kotlin files from src module
-        val destination = "${buildDirectory.absolutePath}${File.separator}app${File.separator}src${File.separator}main${File.separator}kotlin"
+        val destination =
+            "${buildDirectory.absolutePath}${File.separator}app${File.separator}src${File.separator}main${File.separator}kotlin"
         context.moduleRootDirectory.walkTopDown().forEach { file ->
             val path = file.absolutePath.removePrefix(context.moduleRootDirectory.absolutePath)
             val d = File(destination + path)
             file.copyTo(d, overwrite = true)
         }
     }
+
 }
