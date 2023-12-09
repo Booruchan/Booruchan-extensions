@@ -1,10 +1,13 @@
 package org.booruchan.extensions.generate
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.booruchan.extensions.generate.codegen.AndroidCodegen
 import org.booruchan.extensions.generate.codegen.Codegen
 import org.booruchan.extensions.generate.codegen.CodegenContext
 import org.booruchan.extensions.generate.codegen.CodegenContextFactory
 import org.booruchan.extensions.generate.command.WindowsGradleAssembleDebugCommand
+import org.booruchan.extensions.generate.logger.Logger
+import org.booruchan.extensions.generate.logger.LoggerImpl
 import org.booruchan.extensions.generate.template.MustacheTemplateInflater
 import org.booruchan.extensions.generate.template.TemplateInflater
 import org.booruchan.extensions.generate.usecases.FindPackageUseCase
@@ -35,8 +38,12 @@ private val AndroidModule = module {
     single<List<Codegen>> { listOf(AndroidCodegen(get(), get())) }
 }
 
+private val LoggerModule = module {
+    single<Logger> { LoggerImpl() }
+}
+
 fun main(): Unit = startKoin {
-    modules(MainModule, AndroidModule)
+    modules(MainModule, AndroidModule, LoggerModule)
 }.run { Main()() }
 
 class Main : KoinComponent {
@@ -47,32 +54,32 @@ class Main : KoinComponent {
 
     private val codeGenerators: List<Codegen> by inject()
 
+    private val logger: Logger by inject()
+
     operator fun invoke() {
-        val contexts = buildContexts()
-
-        // Generate code for each codegen with provided context
-        contexts.forEach { context -> codeGenerators.forEach { codegen -> codegen(context) } }
-
-        contexts.forEach { context ->
-            WindowsGradleAssembleDebugCommand()(context.buildDirectory)
+        buildContexts().onEach { context ->
+            logger.info { "Generating code for context: ${context.sourceId}" }
+            codeGenerators.forEach { codegen -> codegen(context) }
+        }.onEach { context ->
+            logger.info { "Assembling code for context: ${context.sourceId}" }
+            WindowsGradleAssembleDebugCommand(logger)(context.buildDirectory)
+        }.forEach {
+            logger.info { "Finished: ${it.sourceId}" }
         }
     }
 
-    private fun buildContexts(): List<CodegenContext> {
+    // Find all project modules, file with Source class and build context for code generation
+    private fun buildContexts(): Sequence<CodegenContext> {
         // Get project directory
         val projectDirectory = File(System.getProperty("user.dir")!!)
+        logger.info { "Project directory: $projectDirectory" }
 
-        // Find all project modules
-        val projectModules = findProjectModules(projectDirectory)
-
-        // Find all files with Source class
-        val sourceClassFiles = projectModules.map { projectModuleFile ->
+        return sequenceOf(*findProjectModules(projectDirectory).toTypedArray()).map { projectModuleFile ->
             findSourceClassFile(projectModuleFile)
-        }
-
-        // Build contexts for code generation
-        return sourceClassFiles.filterNotNull().map { sourceClassFile ->
+        }.filterNotNull().map { sourceClassFile ->
             codegenContextFactory.createCodegenContext(sourceClassFile)
+        }.onEach {
+            logger.info { "Generated context: CodegenContext(sourceId=${it.sourceId})" }
         }
     }
 }

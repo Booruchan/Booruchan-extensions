@@ -1,9 +1,11 @@
 package org.booruchan.extensions.generate.command
 
+import org.booruchan.extensions.generate.logger.Logger
+import org.koin.core.context.startKoin
 import java.io.File
 
 /** Command that can be invoked on generated gradle project */
-abstract class GradleCommand() {
+abstract class GradleCommand(private val logger: Logger) {
 
     /** Gradle invocation. Can be different for OS */
     abstract val gradle: String
@@ -11,19 +13,11 @@ abstract class GradleCommand() {
     /** Command that will be invoked */
     abstract val command: String
 
-    operator fun invoke(projectRootDirectory: File) {
-        val processBuilder = ProcessBuilder("$gradle $command".split(" "))
-            .directory(projectRootDirectory)
-            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
+    operator fun invoke(projectRootDirectory: File): Int {
+        val commandString = "$gradle $command".split(" ")
 
-        val process = processBuilder.start()
-        val exitCode = process.waitFor()
+        val processBuilder = ProcessBuilder(commandString).directory(projectRootDirectory)
 
-        if (exitCode == 0) {
-            println("Build successful")
-        } else {
-            println("Build failed with exit code: $exitCode")
-        }
+        return processBuilder.start().waitFor()
     }
 }
