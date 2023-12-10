@@ -4,7 +4,7 @@ import org.booruchan.extensions.generate.logger.Logger
 
 /** Invokes gradlew :app:assembleDebug command for Windows OS */
 class WindowsGradleAssembleDebugCommand(logger: Logger) : GradleCommand(logger) {
-    override val gradle: String
+    override val gradlew: String
         get() = "gradlew.bat"
 
     override val command: String

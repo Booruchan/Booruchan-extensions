@@ -1,5 +1,10 @@
 plugins {
     id("java")
+    id("application")
+}
+
+application {
+    mainClass = "org.booruchan.extensions.generate.MainKt"
 }
 
 group = "org.booruchan.extensions"
@@ -27,3 +32,20 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+
+var runTaskArgumentsString: String by extra {
+    properties.getOrDefault("RunTaskArgumentsString", "") as String
+}
+
+tasks {
+    val runAssembleDebug by registering {
+        runTaskArgumentsString = "assembleDebug"
+        dependsOn(named("run"))
+    }
+}
+
+tasks.named<JavaExec>("run") {
+    setArgsString(runTaskArgumentsString)
+}
+

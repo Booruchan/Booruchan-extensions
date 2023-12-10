@@ -1,6 +1,5 @@
 package org.booruchan.extensions.generate
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.booruchan.extensions.generate.codegen.AndroidCodegen
 import org.booruchan.extensions.generate.codegen.Codegen
 import org.booruchan.extensions.generate.codegen.CodegenContext
@@ -42,9 +41,21 @@ private val LoggerModule = module {
     single<Logger> { LoggerImpl() }
 }
 
-fun main(): Unit = startKoin {
+fun main(args: Array<String>): Unit = startKoin {
     modules(MainModule, AndroidModule, LoggerModule)
-}.run { Main()() }
+}.run {
+    val command = when (args.getOrNull(0)) {
+        "assembleDebug" -> ApplicationCommand.AssembleDebug
+        else -> ApplicationCommand.Undefined
+    }
+
+    val extension = when (val e = args.getOrNull(1)) {
+        null -> ApplicationExtensions.All
+        else -> ApplicationExtensions.Exact(e)
+    }
+
+    Main()(ApplicationContext(command, extension))
+}
 
 class Main : KoinComponent {
     private val findProjectModules: FindProjectModulesUseCase by inject()
@@ -56,22 +67,36 @@ class Main : KoinComponent {
 
     private val logger: Logger by inject()
 
-    operator fun invoke() {
-        buildContexts().onEach { context ->
+    operator fun invoke(applicationContext: ApplicationContext) {
+        if (applicationContext.command is ApplicationCommand.Undefined) {
+            return logger.info { "Undefined command. Terminating." }
+        }
+
+        buildContexts().toList().onEach { context ->
             logger.info { "Generating code for context: ${context.sourceId}" }
             codeGenerators.forEach { codegen -> codegen(context) }
-        }.onEach { context ->
-            logger.info { "Assembling code for context: ${context.sourceId}" }
-            WindowsGradleAssembleDebugCommand(logger)(context.buildDirectory)
+        }.onEach { codegenContext ->
+            executingCommand(applicationContext, codegenContext)
         }.forEach {
-            logger.info { "Finished: ${it.sourceId}" }
+            logger.info { "Finished: ${it.sourceId}\n\n" }
+        }
+    }
+
+    private fun executingCommand(applicationContext: ApplicationContext, codegenContext: CodegenContext) {
+        when (applicationContext.command) {
+            ApplicationCommand.AssembleDebug -> {
+                logger.info { "Assembling code for context: ${codegenContext.sourceId}" }
+                WindowsGradleAssembleDebugCommand(logger)(codegenContext.buildDirectory)
+            }
+
+            ApplicationCommand.Undefined -> throw IllegalStateException("Unreachable")
         }
     }
 
     // Find all project modules, file with Source class and build context for code generation
     private fun buildContexts(): Sequence<CodegenContext> {
         // Get project directory
-        val projectDirectory = File(System.getProperty("user.dir")!!)
+        val projectDirectory = File(System.getProperty("user.dir")!!).parentFile
         logger.info { "Project directory: $projectDirectory" }
 
         return sequenceOf(*findProjectModules(projectDirectory).toTypedArray()).map { projectModuleFile ->
