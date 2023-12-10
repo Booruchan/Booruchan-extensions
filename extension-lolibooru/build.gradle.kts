@@ -1,11 +1,14 @@
+import org.jetbrains.kotlin.backend.common.phaser.namedUnitPhase
+
 plugins {
     `java-library`
     kotlin("jvm")
     id("com.github.johnrengelman.shadow") version ("7.1.1")
     id("org.jetbrains.kotlin.plugin.serialization") version ("1.7.20")
 }
-
 version = "0.3.4"
+
+val title = "Lolibooru"
 
 repositories {
     mavenCentral()

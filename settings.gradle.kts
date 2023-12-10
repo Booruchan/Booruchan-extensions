@@ -10,6 +10,7 @@ plugins {
 }
 
 rootProject.name = "Booruchan extensions"
+
 include(":extension-sdk")
 include(":extension-lolibooru")
 include("generate-extension")
