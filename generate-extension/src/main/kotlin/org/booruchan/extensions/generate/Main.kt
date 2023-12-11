@@ -44,6 +44,8 @@ private val LoggerModule = module {
 fun main(args: Array<String>): Unit = startKoin {
     modules(MainModule, AndroidModule, LoggerModule)
 }.run {
+    println(args.toList())
+
     val command = when (args.getOrNull(0)) {
         "assembleDebug" -> ApplicationCommand.AssembleDebug
         else -> ApplicationCommand.Undefined

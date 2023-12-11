@@ -33,18 +33,24 @@ tasks.test {
     useJUnitPlatform()
 }
 
+val extensions = listOf("Lolibooru")
+val types = listOf("runAssembleDebug")
 
 var runTaskArgumentsString: String by extra {
     properties.getOrDefault("RunTaskArgumentsString", "") as String
 }
 
 tasks {
-    val runAssembleDebug by registering {
-        runTaskArgumentsString = "assembleDebug"
-        dependsOn(named("run"))
+    extensions.forEach { extension ->
+        types.forEach { type ->
+            register("$type$extension") {
+                runTaskArgumentsString = "$type $extension"
+                dependsOn(named("run"))
+            }
+        }
     }
-}
 
-tasks.named<JavaExec>("run") {
-    setArgsString(runTaskArgumentsString)
+    named<JavaExec>("run") {
+        setArgsString(runTaskArgumentsString)
+    }
 }
