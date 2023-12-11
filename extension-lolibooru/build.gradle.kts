@@ -1,4 +1,4 @@
-import task.GenerateCodegenProject
+import plugin.BooruchanExtensionAndroidPlugin
 import task.GenerateCodegenContext
 
 plugins {
@@ -7,6 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version ("7.1.1")
     id("org.jetbrains.kotlin.plugin.serialization") version ("1.7.20")
 }
+
 group = "org.booruchan.extensions.lolibooru"
 version = "0.3.4"
 
@@ -32,27 +33,9 @@ kotlin {
     jvmToolchain(17)
 }
 
-tasks {
-    register<GenerateCodegenProject>("generateAndroidProject") {
-        type = GenerateCodegenProject.Type.Android
-        dependsOn("generateCodegenContext")
-    }
+apply<BooruchanExtensionAndroidPlugin>()
 
-    register<GenerateCodegenContext>("generateCodegenContext") {
-        classname = "LolibooruSource"
-        title = "Lolibooru"
-    }
-
-//    register<Exec>("assembleAndroidDebug") {
-//        workingDir = File(buildDir, "templates${File.separator}android")
-//        commandLine("gradlew.bat")
-//        this.
-//        dependsOn("generateAndroidProject")
-//    }
-
-    register<GradleBuild>("assembleAndroidDebug") {
-        dir = File(buildDir, "templates${File.separator}android")
-        tasks = listOf(":app:assembleDebug")
-        dependsOn("generateAndroidProject")
-    }
+tasks.named<GenerateCodegenContext>("generateCodegenContext") {
+    classname = "LolibooruSource"
+    title = "Lolibooru"
 }

@@ -48,6 +48,7 @@ open class GenerateCodegenProject : DefaultTask() {
         val resourcesDirectory =
             File(project.rootDir, "buildSrc${File.separator}src${File.separator}main${File.separator}resources")
 
+        // Create project and inflate template files
         val androidProjectDirectory = File(resourcesDirectory, "android")
         androidProjectDirectory.walkTopDown().forEach { file ->
             if (!file.isFile) return@forEach
@@ -58,6 +59,18 @@ open class GenerateCodegenProject : DefaultTask() {
             } else {
                 file.copyTo(destination, overwrite = true)
             }
+        }
+
+        // Copy files from the src
+        val mainDirectory = File(project.projectDir, "src${File.separator}main")
+        if (!mainDirectory.exists()) {
+            throw IllegalStateException("Could not locate ${project.name} source files: kotlin or java")
+        }
+
+        mainDirectory.walkTopDown().forEach { file ->
+            if (!file.isFile) return@forEach
+            val destination = File(File(outputDirectory, "app"), file.path.removePrefix(project.projectDir.path))
+            file.copyTo(destination, overwrite = true)
         }
     }
 
