@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":extension-sdk"))
+    implementation(project(":sdk"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
