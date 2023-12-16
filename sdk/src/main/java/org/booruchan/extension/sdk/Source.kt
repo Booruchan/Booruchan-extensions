@@ -3,6 +3,7 @@ package org.booruchan.extension.sdk
 import org.booruchan.extension.sdk.factory.AutocompleteSearchFactory
 import org.booruchan.extension.sdk.factory.FetchPostFactory
 import org.booruchan.extension.sdk.factory.FetchPostsFactory
+import org.booruchan.extension.sdk.factory.FetchTagFactory
 import org.booruchan.extension.sdk.factory.HealthCheckFactory
 import org.booruchan.extension.sdk.settings.SourceSettings
 
@@ -30,4 +31,7 @@ interface Source {
 
     /** Network request and parsing providing factory for autocompleting search */
     val autocompleteSearchFactory: AutocompleteSearchFactory? get() = null
+
+    /** Network request and parsing providing factory for retrieving a single tag */
+    val fetchTagFactory: FetchTagFactory? get() = null
 }
