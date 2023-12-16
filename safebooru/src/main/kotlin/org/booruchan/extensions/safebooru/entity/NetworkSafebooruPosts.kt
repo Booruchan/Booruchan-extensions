@@ -51,7 +51,7 @@ data class NetworkSafebooruPost(
         get() = sampleWidth
 
     override val sampleImageUrl: String
-        get() = previewImageUrl
+        get() = "https://safebooru.org/samples/$directory/sample_${File(image).nameWithoutExtension}.jpg"
 
     override val sampleImageWidth: Int
         get() = width
