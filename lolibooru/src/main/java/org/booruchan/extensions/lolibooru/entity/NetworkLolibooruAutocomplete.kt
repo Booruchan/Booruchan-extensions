@@ -3,6 +3,7 @@ package org.booruchan.extensions.lolibooru.entity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.booruchan.extension.sdk.entity.NetworkAutocomplete
+import org.booruchan.extension.sdk.entity.NetworkTagType
 
 typealias NetworkLolibooruAutocompletes = ArrayList<NetworkLolibooruAutocomplete>
 
@@ -17,7 +18,18 @@ typealias NetworkLolibooruAutocompletes = ArrayList<NetworkLolibooruAutocomplete
 data class NetworkLolibooruAutocomplete(
     @SerialName("name") override val value: String,
     @SerialName("post_count") override val count: Int,
-): NetworkAutocomplete {
+    @SerialName("tag_type") val intType: Int,
+) : NetworkAutocomplete {
+
+    override val type: NetworkTagType
+        get() = when (intType) {
+            0 -> NetworkTagType.General
+            1 -> NetworkTagType.Artist
+            2 -> NetworkTagType.Metadata
+            3 -> NetworkTagType.Copyright
+            4 -> NetworkTagType.Character
+            else -> NetworkTagType.Other
+        }
 
     override val title: String
         get() = value.replace("_", " ")
