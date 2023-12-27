@@ -33,8 +33,9 @@ data class NetworkSafebooruPost(
     val sampleHeight: Int,
     @SerialName("sample_width")
     val sampleWidth: Int,
+    /** Score can be null (for example post id 4669667), so we should escape it using proxy getter */
     @SerialName("score")
-    override val score: Int,
+    val scoreInt: Int?,
     @SerialName("tags")
     val tagsString: String,
     @SerialName("width")
@@ -65,4 +66,8 @@ data class NetworkSafebooruPost(
 
     override val tags: List<String>
         get() = tagsString.split(" ")
+
+    /** A proxy getter for avoiding null value at parsing integer */
+    override val score: Int
+        get() = scoreInt ?: 0
 }
