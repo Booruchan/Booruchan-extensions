@@ -34,7 +34,7 @@ data class NetworkSafebooruPost(
     @SerialName("sample_width")
     val sampleWidth: Int,
     @SerialName("score")
-    val score: Int?,
+    override val score: Int,
     @SerialName("tags")
     val tagsString: String,
     @SerialName("width")

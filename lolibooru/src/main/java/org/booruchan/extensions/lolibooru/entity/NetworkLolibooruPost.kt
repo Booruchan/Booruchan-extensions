@@ -24,6 +24,8 @@ data class NetworkLolibooruPost(
     override val sampleImageHeight: Int,
     @SerialName("sample_width")
     override val sampleImageWidth: Int,
+    @SerialName("score")
+    override val score: Int,
 ) : NetworkPost {
 
     override val tags: List<String>

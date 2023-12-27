@@ -4,6 +4,7 @@ package org.booruchan.extension.sdk.entity
 interface NetworkPost {
     val id: Int
     val tags: List<String>
+    val score: Int
 
     val previewImageUrl: String
     val previewImageWidth: Int
