@@ -35,7 +35,7 @@ data class NetworkSafebooruPost(
     val sampleWidth: Int,
     /** Score can be null (for example post id 4669667), so we should escape it using proxy getter */
     @SerialName("score")
-    val scoreInt: Int?,
+    internal val scoreInt: Int?,
     @SerialName("tags")
     val tagsString: String,
     @SerialName("width")

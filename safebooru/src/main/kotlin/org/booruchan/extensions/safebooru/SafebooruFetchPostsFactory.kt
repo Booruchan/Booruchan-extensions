@@ -33,7 +33,10 @@ class SafebooruFetchPostsFactory(
 }
 
 class SafebooruFetchPostsParser : FetchPostsParser {
+
+    private val json = Json
+
     override fun parse(string: String): List<NetworkPost> {
-        return Json.decodeFromString<NetworkSafebooruPosts>(string)
+        return json.decodeFromString<NetworkSafebooruPosts>(string)
     }
 }
