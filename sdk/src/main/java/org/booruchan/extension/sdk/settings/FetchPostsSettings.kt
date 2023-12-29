@@ -17,7 +17,7 @@ data class FetchPostsSettings internal constructor(
             searchTagNot = sourceSettings.searchSettings.searchTagNot,
             searchTagOr = sourceSettings.searchSettings.searchTagOr,
 
-            ratingTagValues = sourceSettings.searchSettings.ratingTagValues,
+            ratingTagValues = sourceSettings.ratingTagSettings?.values ?: emptyList(),
         )
     )
 }
