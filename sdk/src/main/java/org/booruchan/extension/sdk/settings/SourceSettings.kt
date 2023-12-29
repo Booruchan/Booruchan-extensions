@@ -15,5 +15,8 @@ data class SourceSearchSettings(
     /** How search tags should be negated, to exclude it from the search. Logical 'not' */
     val searchTagNot: String = "-",
     /** How search tags can be combined. Logical 'or' */
-    val searchTagOr: String = "~"
+    val searchTagOr: String = "~",
+
+    /** Values for "rating" meta tag (rating:safe, rating:explicit for example)*/
+    val ratingTagValues: List<String> = emptyList(),
 )

@@ -22,6 +22,7 @@ class LolibooruSource : Source {
         get() = SourceSettings(
             searchSettings = SourceSearchSettings(
                 initialPageNumber = 1,
+                ratingTagValues = listOf("safe", "questionable", "explicit")
             ),
         )
 
