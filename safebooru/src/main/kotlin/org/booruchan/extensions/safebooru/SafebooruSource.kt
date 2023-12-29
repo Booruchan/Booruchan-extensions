@@ -5,6 +5,7 @@ import org.booruchan.extension.sdk.factory.AutocompleteSearchFactory
 import org.booruchan.extension.sdk.factory.FetchPostsFactory
 import org.booruchan.extension.sdk.factory.FetchTagFactory
 import org.booruchan.extension.sdk.factory.HealthCheckFactory
+import org.booruchan.extension.sdk.settings.SourceRatingTagSettings
 import org.booruchan.extension.sdk.settings.SourceSearchSettings
 import org.booruchan.extension.sdk.settings.SourceSettings
 
@@ -22,6 +23,9 @@ class SafebooruSource : Source {
     override val settings: SourceSettings
         get() = SourceSettings(
             searchSettings = SourceSearchSettings(),
+            ratingTagSettings = SourceRatingTagSettings(
+                ratingTagValues = listOf("safe", "questionable", "explicit")
+            )
         )
 
     override val healthCheckFactory: HealthCheckFactory

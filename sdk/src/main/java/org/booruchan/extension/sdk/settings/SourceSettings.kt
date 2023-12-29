@@ -2,6 +2,8 @@ package org.booruchan.extension.sdk.settings
 
 data class SourceSettings(
     val searchSettings: SourceSearchSettings,
+    /** Contains settings for rating tag. Can be null for some sources */
+    val ratingTagSettings: SourceRatingTagSettings? = null,
 )
 
 data class SourceSearchSettings(
@@ -16,7 +18,5 @@ data class SourceSearchSettings(
     val searchTagNot: String = "-",
     /** How search tags can be combined. Logical 'or' */
     val searchTagOr: String = "~",
-
-    /** Values for "rating" meta tag (rating:safe, rating:explicit for example)*/
-    val ratingTagValues: List<String> = emptyList(),
 )
+
