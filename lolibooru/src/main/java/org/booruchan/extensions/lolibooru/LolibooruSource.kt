@@ -25,7 +25,7 @@ class LolibooruSource : Source {
                 initialPageNumber = 1,
             ),
             ratingTagSettings = SourceRatingTagSettings(
-                ratingTagValues = listOf("safe", "questionable", "explicit"),
+                values = listOf("safe", "questionable", "explicit"),
             )
         )
 

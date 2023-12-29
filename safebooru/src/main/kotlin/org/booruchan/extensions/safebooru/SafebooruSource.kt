@@ -24,7 +24,7 @@ class SafebooruSource : Source {
         get() = SourceSettings(
             searchSettings = SourceSearchSettings(),
             ratingTagSettings = SourceRatingTagSettings(
-                ratingTagValues = listOf("safe", "questionable", "explicit")
+                values = listOf("safe", "questionable", "explicit")
             )
         )
 
