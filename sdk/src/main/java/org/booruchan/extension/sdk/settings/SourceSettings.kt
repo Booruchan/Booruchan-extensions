@@ -2,7 +2,13 @@ package org.booruchan.extension.sdk.settings
 
 data class SourceSettings(
     val searchSettings: SourceSearchSettings,
-    /** Contains settings for rating tag. Can be null for some sources */
+    /**
+     * Contains settings for rating tag.
+     * Can be null for some sources, if they don't support ratings, or it is useless
+     * For example, rating for Safebooru is useless cause every image there are safe.
+     *
+     * If the field is null, rating component will be invisible in the search panel
+     * */
     val ratingTagSettings: SourceRatingTagSettings? = null,
 )
 
