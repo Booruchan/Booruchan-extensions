@@ -23,9 +23,6 @@ class SafebooruSource : Source {
     override val settings: SourceSettings
         get() = SourceSettings(
             searchSettings = SourceSearchSettings(),
-            ratingTagSettings = SourceRatingTagSettings(
-                values = listOf("safe", "questionable", "explicit")
-            )
         )
 
     override val healthCheckFactory: HealthCheckFactory
