@@ -1,11 +1,11 @@
 package task
 
+import Project
 import entity.CodegenContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -26,9 +26,26 @@ open class GenerateCodegenContext : DefaultTask() {
     @Input
     var classname: String = "Undefined"
 
+    @Input
+    var androidTargetSdk: Int = Project.android.targetSdk
+
+    @Input
+    var androidMinSdk: Int = Project.android.minSdk
+
+    @Input
+    var androidCompileSdk: Int = Project.android.compileSdk
+
     @TaskAction
     fun invoke() {
-        val context = CodegenContext(title = title, `package` = `package`, classname = classname)
+        val context = CodegenContext(
+            title = title,
+            `package` = `package`,
+            classname = classname,
+
+            androidTargetSdk = androidTargetSdk,
+            androidCompileSdk = androidCompileSdk,
+            androidMinSdk = androidMinSdk,
+        )
         outputFile.writeText(Json.encodeToString(context))
     }
 

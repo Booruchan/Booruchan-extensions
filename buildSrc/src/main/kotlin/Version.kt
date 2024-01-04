@@ -1,4 +1,3 @@
-
 object Version {
 
     val slf4j = Slf4j(

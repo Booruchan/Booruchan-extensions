@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace '{{SourcePackage}}'
-    compileSdk 33
+    compileSdk {{ProjectAndroidCompileSdk}}
 
     defaultConfig {
         applicationId "{{SourcePackage}}"
-        minSdk 24
-        targetSdk 33
+        minSdk {{ProjectAndroidMinSdk}}
+        targetSdk {{ProjectAndroidTargetSdk}}
         versionCode 7
         versionName "1.3"
 

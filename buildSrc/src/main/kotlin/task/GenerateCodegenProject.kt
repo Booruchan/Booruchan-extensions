@@ -17,6 +17,10 @@ open class GenerateCodegenProject : DefaultTask() {
         private const val SourceTitleName = "SourceTitle"
         private const val SourcePackageName = "SourcePackage"
         private const val SourceClassName = "SourceClassName"
+
+        private const val ProjectAndroidCompileSdk = "ProjectAndroidCompileSdk"
+        private const val ProjectAndroidTargetSdk = "ProjectAndroidTargetSdk"
+        private const val ProjectAndroidMinSdk = "ProjectAndroidMinSdk"
     }
 
     private val mustacheCompiler: Mustache.Compiler = Mustache.compiler()
@@ -91,6 +95,9 @@ open class GenerateCodegenProject : DefaultTask() {
         put(SourceTitleName, context.title)
         put(SourcePackageName, context.`package`)
         put(SourceClassName, context.classname)
+        put(ProjectAndroidMinSdk, context.androidMinSdk.toString())
+        put(ProjectAndroidCompileSdk, context.androidCompileSdk.toString())
+        put(ProjectAndroidTargetSdk, context.androidTargetSdk.toString())
     }
 
     enum class Type {
