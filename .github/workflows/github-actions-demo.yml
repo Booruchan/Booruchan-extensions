@@ -20,14 +20,30 @@ jobs:
 #        run: |
 #          mv output-metadata.json ${{ env.MODULENAME }}-output-metadata.json
 
-      - name: Test
-        run: find . -name "*.apk"
+      - name: Find and rename APKs and JSON files
+        run: |
+          # Find all .apk files and pass each file path to the while loop
+          find . -name "*.apk" | while read apk; do
+            # Extract the directory path of the .apk file
+            apk_dir=$(dirname "$apk")
+            # Extract the name of the .apk file without the extension
+            apk_name=$(basename "$apk" .apk)          
+            # Construct the .json file path assuming it has the same name as the .apk file
+            json_file="$apk_dir/output-metadata.json"
+            # Check if the .json file exists
+            if [ -f "$json_file" ]; then
+              # Rename the .apk file
+              mv "$apk" "$apk_dir/${apk_name}_renamed.apk"
+              # Rename the .json file
+              mv "$json_file" "$apk_dir/${apk_name}_renamed.json" 
+            fi
+          done
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: android-artifacts
-          path: |
-            app/build/templates/android/app/build/outputs/apk/debug/*.apk
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: android-artifacts
+#          path: |
+#            app/build/templates/android/app/build/outputs/apk/debug/*.apk
 
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
