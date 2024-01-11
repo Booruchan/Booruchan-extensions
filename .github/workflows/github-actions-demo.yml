@@ -10,6 +10,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Assemble Android Releases
         run: ./gradlew assembleAndroidRelease
 
