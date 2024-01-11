@@ -19,12 +19,12 @@ jobs:
       - name: Collect Android Release apks
         run: ./gradlew collectAndroidReleaseApks
 
-      - name: Upload all android artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: all-artifacts
-          path: |
-            build/android/*
+#      - name: Upload all android artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: all-artifacts
+#          path: |
+#            build/android/*
 
       - name: Clone artifacts repository
         uses: actions/checkout@v2
@@ -34,4 +34,4 @@ jobs:
 
       - name: Sas
         run: |
-          find /build -type f
+          find ./ -type f
