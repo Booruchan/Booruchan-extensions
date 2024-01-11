@@ -19,3 +19,9 @@ jobs:
       - name: Collect Android Release apks
         run: ./gradlew collectAndroidReleaseApks
 
+      - name: Upload all android artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: all-artifacts
+          path: |
+            build/android/*
