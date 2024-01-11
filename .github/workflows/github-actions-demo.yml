@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 
-on: [push]
+on: [ push ]
 
 jobs:
   Explore-GitHub-Actions:
@@ -25,3 +25,13 @@ jobs:
           name: all-artifacts
           path: |
             build/android/*
+
+      - name: Clone artifacts repository
+        uses: actions/checkout@v2
+        with:
+          repository: Booruchan/Booruchan-artifacts
+          path: build
+
+      - name: Sas
+        run: |
+          find /build -type f
