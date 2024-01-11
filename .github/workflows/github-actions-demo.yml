@@ -20,6 +20,9 @@ jobs:
 #        run: |
 #          mv output-metadata.json ${{ env.MODULENAME }}-output-metadata.json
 
+      - name: Test
+        run: find . -name "*.apk"
+
       - uses: actions/upload-artifact@v2
         with:
           name: android-artifacts
