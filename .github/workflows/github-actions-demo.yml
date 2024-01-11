@@ -19,6 +19,12 @@ jobs:
       - name: Collect Android Release apks
         run: ./gradlew collectAndroidReleaseApks
 
+      - name: Clone artifacts repository
+        uses: actions/checkout@v2
+        with:
+          repository: booruchan/booruchan-artifacts
+          path: build/artifacts
+
 #      - name: Upload all android artifacts
 #        uses: actions/upload-artifact@v2
 #        with:
@@ -26,12 +32,6 @@ jobs:
 #          path: |
 #            build/android/*
 
-      - name: Clone artifacts repository
-        uses: actions/checkout@v2
-        with:
-          repository: Booruchan/Booruchan-artifacts
-          path: build
-
       - name: Sas
         run: |
-          find . -type f
+          find ./build -type f
