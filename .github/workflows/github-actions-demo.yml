@@ -25,6 +25,9 @@ jobs:
           repository: booruchan/booruchan-artifacts
           path: build/artifacts
 
+      - name: Copy apks to repository
+        run: cp -r build/android/* build/artifacts/android/
+
 #      - name: Upload all android artifacts
 #        uses: actions/upload-artifact@v2
 #        with:
