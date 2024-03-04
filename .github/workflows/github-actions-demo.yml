@@ -13,27 +13,21 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Assemble Android Releases
-        run: ./gradlew assembleAndroidRelease
-
-      - name: Collect Android Release apks
-        run: ./gradlew collectAndroidReleaseApks
-
-      - name: Clone artifacts repository
+      - name: Check out cretendials repository
         uses: actions/checkout@v2
         with:
-          repository: booruchan/booruchan-artifacts
-          path: build/artifacts
+          repository: booruchan/booruchan-credentials
+          path: build/
+          ssh-key: ${{ secrets.CREDENTIALS_SSH_PRIVATE_KEY }}
 
-      - name: Copy apks to repository
-        run: cp -r build/android/* build/artifacts/android/
-
-#      - name: Upload all android artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: all-artifacts
-#          path: |
-#            build/android/*
+#      - name: Assemble and Sign Android Releases
+#        run: ./gradlew assembleSignedAndroidRelease
+#
+#      - name: Collect Android Signed apks
+#        run: ./gradlew collectAndroidSignedApks
+#
+#      - name: Generate deploy metadata file
+#        run: ./gradlew generateAndroidReleaseDeployMetadata
 
       - name: Sas
         run: |
