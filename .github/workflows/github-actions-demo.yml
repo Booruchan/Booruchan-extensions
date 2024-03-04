@@ -7,6 +7,11 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+#      - name: Setup Android SDK
+#        uses: android-actions/setup-android@v3
+#
+#      - run: sdkmanager build-tools
+#
       - name: Check out repository code
         uses: actions/checkout@v4
 
