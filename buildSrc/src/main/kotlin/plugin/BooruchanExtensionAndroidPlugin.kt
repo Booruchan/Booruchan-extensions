@@ -8,8 +8,7 @@ import task.GenerateCodegenContext
 import task.GenerateCodegenProject
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.Locale
-import java.util.Properties
+import java.util.*
 
 /** Provides several gradle tasks for generating extensions and installing them on android device */
 class BooruchanExtensionAndroidPlugin : Plugin<Project> {
@@ -57,9 +56,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         }
 
         project.tasks.register<Exec>("assembleAlignedAndroidRelease") {
-            println("Environment: ${System.getenv("ANDROID_SDK_ROOT")}")
-            val properties = Properties().apply { load(project.rootProject.file("local.properties").reader()) }
-            val sdkDirectory = File(properties["sdk.dir"].toString())
+            val sdkDirectory = getAndroidSdkRootPath(project)
             val zipalign = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "zipalign" }
                 ?: throw FileNotFoundException("Could not find zipalign. Does your local properties contains android sdk directory")
 
@@ -77,9 +74,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         }
 
         project.tasks.register<Exec>("assembleSignedAndroidRelease") {
-            println("Environment: ${System.getenv("ANDROID_SDK_ROOT")}")
-            val properties = Properties().apply { load(project.rootProject.file("local.properties").reader()) }
-            val sdkDirectory = File(properties["sdk.dir"].toString())
+            val sdkDirectory = getAndroidSdkRootPath(project)
             val apksigner = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "apksigner" }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
 
@@ -106,5 +101,13 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
             dependsOn("assembleAlignedAndroidRelease")
         }
+    }
+
+    private fun getAndroidSdkRootPath(project: Project): File {
+        val environmentAndroidSkd = System.getenv("ANDROID_SDK_ROOT")
+        if (environmentAndroidSkd != null) return File(environmentAndroidSkd,)
+
+        val properties = Properties().apply { load(project.rootProject.file("local.properties").reader()) }
+        return File(properties["sdk.dir"].toString())
     }
 }
