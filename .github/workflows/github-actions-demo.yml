@@ -7,11 +7,12 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-#      - name: Setup Android SDK
-#        uses: android-actions/setup-android@v3
-#
-#      - run: sdkmanager build-tools
-#
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Print android root
+        run: echo $ANDROID_SDK_ROOT
+
       - name: Check out repository code
         uses: actions/checkout@v4
 
@@ -24,6 +25,10 @@ jobs:
           repository: booruchan/booruchan-credentials
           path: build/
           ssh-key: ${{ secrets.CREDENTIALS_SSH_PRIVATE_KEY }}
+
+      - name: Sas
+        run: |
+          find ./build -type f
 
       - name: Assemble and Sign Android Releases
         run: ./gradlew assembleSignedAndroidRelease -Pjks=/build/Booruchan-extensions.jks -Palias=${{ secrets.ANDROID_KEYSTORE_ALIAS }} -Ppass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
