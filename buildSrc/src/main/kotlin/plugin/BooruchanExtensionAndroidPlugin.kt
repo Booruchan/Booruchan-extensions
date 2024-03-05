@@ -57,6 +57,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         }
 
         project.tasks.register<Exec>("assembleAlignedAndroidRelease") {
+            println("Environment: ${System.getenv("ANDROID_SDK_ROOT")}")
             val properties = Properties().apply { load(project.rootProject.file("local.properties").reader()) }
             val sdkDirectory = File(properties["sdk.dir"].toString())
             val zipalign = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "zipalign" }
