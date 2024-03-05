@@ -1,4 +1,4 @@
-import plugin.BooruchanExtensionAndroidPlugin
+import plugin.BooruchanDeployAndroidPlugin
 
 buildscript {
     dependencies {
@@ -51,32 +51,7 @@ subprojects {
     }
 }
 
-// Task for collecting release apks in root project build directory
-tasks.register<Task>("collectAndroidReleaseApks") {
-    project.subprojects.filter { project ->
-        project.plugins.hasPlugin(type = BooruchanExtensionAndroidPlugin::class)
-    }.forEach { project ->
-        // Define directories
-        val androidDirectory = File(project.projectDir, "build${File.separator}templates${File.separator}android")
-        val androidOutputs = File(androidDirectory, "app${File.separator}build${File.separator}outputs")
-        val androidRelease = File(androidOutputs, "${File.separator}apk${File.separator}release")
-
-        // Output directory
-        val androidOutput = File(project.rootDir, "build${File.separator}android").also { it.mkdirs() }
-
-        // Find apk file, copy and rename
-        val apk = androidRelease.listFiles().find { it.extension == "apk" }!!
-        val newApkName = "${project.name}-release-unsigned.apk"
-        apk.copyTo(File(androidOutput, newApkName))
-
-        // Find json file, copy and rename
-        val json = androidRelease.listFiles().find { it.extension == "json" }!!
-        val newJsonName = "${project.name}-release-metadata.json"
-        json.copyTo(File(androidOutput, newJsonName))
-
-        // Change copied json file
-        val jsonContent = File(androidOutput, newJsonName).readText()
-        val newJsonContent = jsonContent.replace("app-release-unsigned.apk", newApkName)
-        File(androidOutput, newJsonName).writeText(newJsonContent)
-    }
-}
+// Plugin for preparing apks for publishing
+// Responsible for collecting apks, aligning and signing,
+// Creating json metadata about whole bunch of apks
+apply<BooruchanDeployAndroidPlugin>()
