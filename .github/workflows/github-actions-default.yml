@@ -1,5 +1,5 @@
 name: Local branch actions
-run-name: Executing main actions on ${{ github.ref }} branch
+run-name: Executing main actions on ${{ github.ref.name }} branch
 
 on:
   push:
