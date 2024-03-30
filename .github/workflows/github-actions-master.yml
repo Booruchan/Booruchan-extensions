@@ -1,6 +1,10 @@
 name: Booruchan extensions actions
+run-name: Executing main actions on master branch
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   Build:
