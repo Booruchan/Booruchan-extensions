@@ -1,3 +1,5 @@
+import plugin.BooruchanDeployAndroidPlugin
+
 buildscript {
     dependencies {
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
@@ -48,3 +50,8 @@ subprojects {
         }
     }
 }
+
+// Plugin for preparing apks for publishing
+// Responsible for collecting apks, aligning and signing,
+// Creating json metadata about whole bunch of apks
+apply<BooruchanDeployAndroidPlugin>()

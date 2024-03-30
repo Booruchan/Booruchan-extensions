@@ -1,0 +1,29 @@
+name: Local branch actions
+run-name: Executing main actions on `${{ github.ref_name }}` branch
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Invoke build
+        run: ./gradlew build
