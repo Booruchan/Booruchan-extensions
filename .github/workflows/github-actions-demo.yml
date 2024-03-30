@@ -22,7 +22,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Check out cretendials repository
+      - name: Check out credentials repository
         uses: actions/checkout@v2
         with:
           repository: booruchan/booruchan-credentials
@@ -37,6 +37,18 @@ jobs:
 
       - name: Generate deploy metadata file
         run: ./gradlew generateAndroidSignedDeployMetadata
+
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ANDROID_GITHUB_TOKEN_API }}
+        with:
+          source-directory: build/android/
+          destination-github-username: 'booruchan'
+          destination-repository-name: 'booruchan-artifacts'
+          user-email: mkliverout@gmail.com
+          target-branch: master
 
       - name: Sas
         run: |
