@@ -1,5 +1,5 @@
 name: Master branch actions
-run-name: Executing main actions on master branch
+run-name: Executing main actions on `master` branch
 
 on:
   push:
