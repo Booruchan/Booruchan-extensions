@@ -24,9 +24,11 @@ jobs:
       - name: Invoke build
         run: ./gradlew build
 
-  Generate-And-Upload-Artifacts:
+  Generate-Artifacts:
     needs: Build
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.artifact-upload-step.outputs.artifact-id }}
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -62,23 +64,27 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: android-artifacts
           path: build/android/*
+          retention-days: 7
 
-#      - name: Pushes to another repository
-#        id: push_directory
-#        uses: cpina/github-action-push-to-another-repository@main
-#        env:
-#          API_TOKEN_GITHUB: ${{ secrets.ANDROID_GITHUB_TOKEN_API }}
-#        with:
-#          source-directory: build/android/
-#          destination-github-username: 'booruchan'
-#          destination-repository-name: 'booruchan-artifacts'
-#          user-email: mkliverout@gmail.com
-#          target-branch: master
-#
-#      - name: Sas
-#        run: |
-#          find ./build -type f
+  Publish-Artifacts:
+    needs: Generate-Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-artifacts
 
-
+      - name: Push to booruchan-artifacts repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ANDROID_GITHUB_TOKEN_API }}
+        with:
+          source-directory: ./
+          destination-github-username: 'booruchan'
+          destination-repository-name: 'booruchan-artifacts'
+          user-email: mkliverout@gmail.com
+          target-branch: master
 
