@@ -36,7 +36,7 @@ open class BooruchanDeployAndroidPlugin: Plugin<Project> {
             collectAndroidSignedApks(project)
         }
 
-        // Task for generating metadata file for deploying android
+        /** Generates android-deploy-metadata file in build/android directory */
         project.tasks.register<Task>("generateAndroidSignedDeployMetadata") {
             generateAndroidSignedDeployMetadata(project)
         }
@@ -72,6 +72,8 @@ open class BooruchanDeployAndroidPlugin: Plugin<Project> {
     }
 
     private fun Task.generateAndroidSignedDeployMetadata(project: Project) {
+        val keyalias = project.property("alias")!!.toString()
+
         val androidBuild = File(project.buildDir, "android")
 
         val androidBuildFiles = androidBuild.listFiles()

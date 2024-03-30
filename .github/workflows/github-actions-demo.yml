@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew collectAndroidSignedApks
 
       - name: Generate deploy metadata file
-        run: ./gradlew generateAndroidReleaseDeployMetadata
+        run: ./gradlew generateAndroidSignedDeployMetadata
 
       - name: Sas
         run: |
