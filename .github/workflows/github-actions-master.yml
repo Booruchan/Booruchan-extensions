@@ -1,4 +1,4 @@
-name: Booruchan extensions actions
+name: Master branch actions
 run-name: Executing main actions on master branch
 
 on:
