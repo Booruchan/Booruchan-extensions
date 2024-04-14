@@ -57,7 +57,7 @@ jobs:
           ssh-key: ${{ secrets.CREDENTIALS_SSH_PRIVATE_KEY }}
 
       - name: Assemble and Sign Android Releases
-        run: ./gradlew assembleSignedAndroidRelease -Pjks=/build/Booruchan-extensions.jks -Palias=${{ secrets.ANDROID_KEYSTORE_ALIAS }} -Ppass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: ./gradlew assembleSignedAndroidRelease
 
       - name: Collect Android Signed apks
         run: ./gradlew collectAndroidSignedApks
