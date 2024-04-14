@@ -38,4 +38,5 @@ apply<BooruchanExtensionAndroidPlugin>()
 tasks.named<GenerateCodegenContext>("generateCodegenContext") {
     classname = "LolibooruSource"
     title = "Lolibooru"
+    versionName = version.toString()
 }

@@ -38,4 +38,5 @@ apply<BooruchanExtensionAndroidPlugin>()
 tasks.named<GenerateCodegenContext>("generateCodegenContext") {
     classname = "SafebooruSource"
     title = "Safebooru"
+    versionName = version.toString()
 }
