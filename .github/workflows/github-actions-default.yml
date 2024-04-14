@@ -1,5 +1,5 @@
 name: Local branch actions
-run-name: Executing main actions on `${{ github.ref_name }}` branch
+run-name: Executing build/generate action on `${{ github.ref_name }}` branch
 
 on:
   push:
@@ -27,3 +27,47 @@ jobs:
 
       - name: Invoke build
         run: ./gradlew build
+
+  Generate-Artifacts:
+    needs: Build
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.artifact-upload-step.outputs.artifact-id }}
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Check out credentials repository
+        uses: actions/checkout@v2
+        with:
+          repository: booruchan/booruchan-credentials
+          path: build/
+          ssh-key: ${{ secrets.CREDENTIALS_SSH_PRIVATE_KEY }}
+
+      - name: Assemble and Sign Android Releases
+        run: ./gradlew assembleSignedAndroidRelease -Pjks=/build/Booruchan-extensions.jks -Palias=${{ secrets.ANDROID_KEYSTORE_ALIAS }} -Ppass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+
+      - name: Collect Android Signed apks
+        run: ./gradlew collectAndroidSignedApks
+
+      - name: Generate deploy metadata file
+        run: ./gradlew generateAndroidSignedDeployMetadata
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-artifacts
+          path: build/android/*
+          retention-days: 7

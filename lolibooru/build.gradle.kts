@@ -32,11 +32,11 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
-// Plugin build disabled
-//apply<BooruchanExtensionAndroidPlugin>()
-//
-//tasks.named<GenerateCodegenContext>("generateCodegenContext") {
-//    classname = "LolibooruSource"
-//    title = "Lolibooru"
-//    versionName = version.toString()
-//}
+
+apply<BooruchanExtensionAndroidPlugin>()
+
+tasks.named<GenerateCodegenContext>("generateCodegenContext") {
+    classname = "LolibooruSource"
+    title = "Lolibooru"
+    versionName = version.toString()
+}
