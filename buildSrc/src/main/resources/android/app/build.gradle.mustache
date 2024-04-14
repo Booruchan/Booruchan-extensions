@@ -5,15 +5,15 @@ plugins {
 }
 
 android {
-    namespace '{{SourcePackage}}'
+    namespace '{{SourcePackageName}}'
     compileSdk {{ProjectAndroidCompileSdk}}
 
     defaultConfig {
-        applicationId "{{SourcePackage}}"
+        applicationId "{{SourcePackageName}}"
         minSdk {{ProjectAndroidMinSdk}}
         targetSdk {{ProjectAndroidTargetSdk}}
-        versionCode 7
-        versionName "1.3"
+        versionCode {{SourceVersionCode}}
+        versionName "{{SourceVersionName}}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

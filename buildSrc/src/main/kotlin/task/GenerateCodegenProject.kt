@@ -14,9 +14,11 @@ import java.io.File
 open class GenerateCodegenProject : DefaultTask() {
 
     companion object {
-        private const val SourceTitleName = "SourceTitle"
-        private const val SourcePackageName = "SourcePackage"
+        private const val SourceTitleName = "SourceTitleName"
+        private const val SourcePackageName = "SourcePackageName"
         private const val SourceClassName = "SourceClassName"
+        private const val SourceVersionName = "SourceVersionName"
+        private const val SourceVersionCode = "SourceVersionCode"
 
         private const val ProjectAndroidCompileSdk = "ProjectAndroidCompileSdk"
         private const val ProjectAndroidTargetSdk = "ProjectAndroidTargetSdk"
@@ -95,6 +97,8 @@ open class GenerateCodegenProject : DefaultTask() {
         put(SourceTitleName, context.title)
         put(SourcePackageName, context.`package`)
         put(SourceClassName, context.classname)
+        put(SourceVersionCode, context.versionCode.toString())
+        put(SourceVersionName, context.versionName)
         put(ProjectAndroidMinSdk, context.androidMinSdk.toString())
         put(ProjectAndroidCompileSdk, context.androidCompileSdk.toString())
         put(ProjectAndroidTargetSdk, context.androidTargetSdk.toString())

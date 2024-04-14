@@ -8,6 +8,9 @@ data class CodegenContext(
     val `package`: String,
     val classname: String,
 
+    val versionCode: Int,
+    val versionName: String,
+
     val androidMinSdk: Int,
     val androidTargetSdk: Int,
     val androidCompileSdk: Int,

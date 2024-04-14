@@ -12,12 +12,24 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.{{SourceTitle}}"
+        android:theme="@style/Theme.{{SourceTitleName}}"
         tools:targetApi="31" >
 
         <meta-data
             android:name="org.booruchan.extension.source"
             android:value=".{{SourceClassName}}" />
+
+        <meta-data
+            android:name="org.booruchan.extension.title"
+            android:value=".{{SourceTitleName}}" />
+
+        <meta-data
+            android:name="org.booruchan.extension.version"
+            android:value=".{{SourceVersionName}}" />
+
+        <meta-data
+                android:name="org.booruchan.extension.code"
+                android:value=".{{SourceVersionCode}}" />
 
     </application>
 

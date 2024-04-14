@@ -3,6 +3,7 @@ package task
 import Project
 import entity.CodegenContext
 import kotlinx.serialization.encodeToString
+import kotlin.math.pow
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
@@ -35,12 +36,21 @@ open class GenerateCodegenContext : DefaultTask() {
     @Input
     var androidCompileSdk: Int = Project.android.compileSdk
 
+    @Input
+    var versionName: String = "Undefined"
+
+    private val versionCode: Int
+        get() = versionName.filter { it.isDigit() }.toInt()
+
     @TaskAction
     fun invoke() {
         val context = CodegenContext(
             title = title,
             `package` = `package`,
             classname = classname,
+
+            versionCode = versionCode,
+            versionName = versionName,
 
             androidTargetSdk = androidTargetSdk,
             androidCompileSdk = androidCompileSdk,
