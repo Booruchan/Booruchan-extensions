@@ -90,21 +90,18 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
             val keyalias = project.property("alias")!!.toString()
             val keypass = project.property("pass")!!.toString()
 
-            println(keystore)
-            println(keyalias)
-            println(keypass)
+            println("Invoke apksigner sign")
+            commandLine("ls")
 
-            println("INvoke sign")
-
-            commandLine(
-                apksigner, "sign",
-                "--ks", keystore,
-                "--ks-key-alias", keyalias,
-                "--out", outputApk,
-                "--ks-pass", "pass:$keypass",
-                "--key-pass", "pass:$keypass",
-                inputApk,
-            )
+//            commandLine(
+//                apksigner, "sign",
+//                "--ks", keystore,
+//                "--ks-key-alias", keyalias,
+//                "--out", outputApk,
+//                "--ks-pass", "pass:$keypass",
+//                "--key-pass", "pass:$keypass",
+//                inputApk,
+//            )
 
             dependsOn("assembleAlignedAndroidRelease")
         }
