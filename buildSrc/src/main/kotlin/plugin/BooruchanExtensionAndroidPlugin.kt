@@ -90,6 +90,12 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
             val keyalias = project.property("alias")!!.toString()
             val keypass = project.property("pass")!!.toString()
 
+            println(keystore)
+            println(keyalias)
+            println(keypass)
+
+            println("INvoke sign")
+
             commandLine(
                 apksigner, "sign",
                 "--ks", keystore,
