@@ -95,7 +95,8 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
                 "--ks", keystore,
                 "--ks-key-alias", keyalias,
                 "--out", outputApk,
-                "--ks-pass", keypass,
+                "--ks-pass", "pass:$keypass",
+                "--key-pass", "pass:$keypass",
                 inputApk,
             )
 
