@@ -1,20 +1,30 @@
 name: Release sdk actions
-run-name: Executing release for `${{ github.ref_name }}` tag
+run-name: Debug - Executing release for `${{ github.ref_name }}` tag
+
+#on:
+#  push:
+#    tags:
+#      - 'sdk-*'
 
 on:
   push:
-    tags:
-      - 'sdk-*'
+    branches-ignore:
+      - master
 
 jobs:
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      sdk: ${{ steps.sdk-artifact-upload.outputs.artifact-id }}
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -25,29 +35,30 @@ jobs:
       - name: Invoke build
         run: ./gradlew build
 
-      - name: Publish jar artifact
-        uses: actions/upload-artifact@v2
+      - name: Publish sdk jar artifact
+        id: sdk-artifact-upload
+        uses: actions/upload-artifact@v4
         with:
-          path: sdk/build/libs/booruchan-sdk*.jar
+          name: sdk-artifacts
+          path: sdk/build/libs/*
           retention-days: 1
 
-      - name: Display structure of downloaded files
-        run: ls -R
+  #      - name: Debug - output artifact ID
+  #        run: echo 'Artifact ID is ${{ steps.sdk-artifact-upload.outputs.artifact-id }}'
 
   Release-Sdk-Artifact:
     needs: Build
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - name: Collect artifact from the previous job
-        uses: actions/download-artifact@v4
+      - name: Collect sdk artifact from `Build` job
+        env:
+          sdk: ${{needs.Build.outputs.sdk}}
+        run: echo "Artifact ID from previous job is $sdk"
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      - name: Release sdk
-        uses: ncipollo/release-action@v1
+      - uses: actions/download-artifact@v4
         with:
-          draft: true
-          artifacts: "release.tar.gz,foo/*.txt"
+          name: sdk-artifacts
+
+      - name: Debug - Display structure of downloaded files
+        run: ls -R

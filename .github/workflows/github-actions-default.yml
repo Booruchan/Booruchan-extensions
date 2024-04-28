@@ -9,8 +9,6 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    outputs:
-      sdk: ${{ steps.sdk-artifact-upload.outputs.artifact-id }}
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -30,33 +28,11 @@ jobs:
       - name: Invoke build
         run: ./gradlew build
 
-      - name: Publish jar artifact
-        id: sdk-artifact-upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: sdk-artifacts
-          path: sdk/build/libs/*
-          retention-days: 1
-
-      - name: Output artifact ID
-        run: echo 'Artifact ID is ${{ steps.sdk-artifact-upload.outputs.artifact-id }}'
-
-  Generate-Artifacts:
+  Generate-Apk-Artifacts:
     needs: Build
     runs-on: ubuntu-latest
 
     steps:
-      - env:
-          sdk: ${{needs.Build.outputs.sdk}}
-        run: echo "Artifact ID from previous job is $sdk"
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: sdk-artifacts
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
