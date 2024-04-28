@@ -28,6 +28,12 @@ jobs:
       - name: Invoke build
         run: ./gradlew build
 
+      - name: Publish jar artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: booruchan-sdk-*
+          path: sdk/build/libs/*.jar
+
   Generate-Artifacts:
     needs: Build
     runs-on: ubuntu-latest

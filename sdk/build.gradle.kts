@@ -23,3 +23,7 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
+
+tasks.jar {
+    archiveBaseName.set("booruchan-sdk")
+}
