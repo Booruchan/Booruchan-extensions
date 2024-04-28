@@ -12,5 +12,5 @@ plugins {
 rootProject.name = "Booruchan extensions"
 
 include(":sdk")
-include(":lolibooru")
-include(":safebooru")
+//include(":lolibooru")
+//include(":safebooru")
