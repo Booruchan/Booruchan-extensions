@@ -33,7 +33,7 @@ jobs:
         with:
           name: sdk-artifacts
           path: sdk/build/libs/*
-          retention-days: 1
+          retention-days: 7
 
   Generate-Artifacts:
     needs: Build
