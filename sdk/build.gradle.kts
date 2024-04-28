@@ -24,31 +24,16 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
-
-// Configure the publication to Maven repository
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-
-            // Configure the coordinates and other settings here
-            groupId = "com.booruchan"
-            artifactId = "sdk"
-            version = "0.3.5"
-
-//            // Optionally, you can attach sources and javadoc
-//            val sourcesJar = tasks.create("sourceJar", Jar::class) {
-//                archiveClassifier.set("sources")
-//                from(sourceSets["main"].allSource)
-//            }
-//            val javadocJar = tasks.create("javadocJar", Javadoc::class) {
-//                dependsOn("javadoc")
-//                from(tasks["javadoc"].outputs)
-//            }
-//            artifacts {
-//                add(sourcesJar)
-//                add(javadocJar)
-//            }
+afterEvaluate {
+    // Configure the publication to Maven repository
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "com.booruchan"
+                artifactId = "sdk"
+                version = "0.3.5"
+                from(components["java"])
+            }
         }
     }
 }
