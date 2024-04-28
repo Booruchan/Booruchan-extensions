@@ -32,7 +32,7 @@ jobs:
 
       - name: Publish jar artifact
         id: sdk-artifact-upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: sdk-artifacts
           path: sdk/build/libs/*
