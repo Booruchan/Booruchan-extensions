@@ -22,6 +22,18 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         else -> "gradlew"
     }
 
+    /** Apksigner executable based on OS */
+    private val apksigner: String = when {
+        osName.contains("windows") -> "apksigner.bat"
+        else -> "apksigner"
+    }
+
+    /** Zipalign executable based on OS */
+    private val zipalign: String = when {
+        osName.contains("windows") -> "zipalign.bat"
+        else -> "zipalign"
+    }
+
     override fun apply(project: Project) {
         // For generating context for inflating template files
         project.tasks.register<GenerateCodegenContext>("generateCodegenContext")
@@ -59,17 +71,15 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         project.tasks.register<Exec>("assembleAlignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
             val zipalign = sdkDirectory.walkTopDown()
-                .filter { it.isFile && it.nameWithoutExtension == "zipalign" }
+                .filter { it.isFile && it.name == zipalign }
                 .sortedBy { it.absolutePath }
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find zipalign. Does your local properties contains android sdk directory")
 
-            val apksigner2 = sdkDirectory.walkTopDown().filter { it.isFile && it.nameWithoutExtension == "apksigner" }
-            apksigner2.forEach { println(it.absolutePath) }
-
             val apksigner = sdkDirectory.walkTopDown()
                 .filter { it.isFile && it.nameWithoutExtension == "apksigner" }
                 .sortedBy { it.absolutePath }
+                .onEach { println(it.absolutePath) }
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
             println("Selected: $apksigner")
