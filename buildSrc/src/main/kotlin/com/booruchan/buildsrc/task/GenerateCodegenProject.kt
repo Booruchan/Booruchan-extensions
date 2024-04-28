@@ -1,7 +1,7 @@
-package task
+package com.booruchan.buildsrc.task
 
 import com.samskivert.mustache.Mustache
-import entity.CodegenContext
+import com.booruchan.buildsrc.entity.CodegenContext
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input

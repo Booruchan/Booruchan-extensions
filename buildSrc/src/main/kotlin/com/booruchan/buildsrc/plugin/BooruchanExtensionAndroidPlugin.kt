@@ -1,14 +1,15 @@
-package plugin
+package com.booruchan.buildsrc.plugin
 
+import com.booruchan.buildsrc.task.GenerateCodegenContext
+import com.booruchan.buildsrc.task.GenerateCodegenProject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import org.gradle.kotlin.dsl.register
-import task.GenerateCodegenContext
-import task.GenerateCodegenProject
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.*
+import java.util.Locale
+import java.util.Properties
 
 /** Provides several gradle tasks for generating extensions and installing them on android device */
 class BooruchanExtensionAndroidPlugin : Plugin<Project> {
@@ -57,13 +58,19 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
         project.tasks.register<Exec>("assembleAlignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
-            val zipalign = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "zipalign" }
+            val zipalign = sdkDirectory.walkTopDown()
+                .filter { it.isFile && it.nameWithoutExtension == "zipalign" }
+                .sortedBy { it.absolutePath }
+                .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find zipalign. Does your local properties contains android sdk directory")
 
             val apksigner2 = sdkDirectory.walkTopDown().filter { it.isFile && it.nameWithoutExtension == "apksigner" }
             apksigner2.forEach { println(it.absolutePath) }
 
-            val apksigner = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "apksigner" }
+            val apksigner = sdkDirectory.walkTopDown()
+                .filter { it.isFile && it.nameWithoutExtension == "apksigner" }
+                .sortedBy { it.absolutePath }
+                .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
             println("Selected: $apksigner")
 
@@ -118,7 +125,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
     private fun getAndroidSdkRootPath(project: Project): File {
         val environmentAndroidSkd = System.getenv("ANDROID_SDK_ROOT")
-        if (environmentAndroidSkd != null) return File(environmentAndroidSkd,)
+        if (environmentAndroidSkd != null) return File(environmentAndroidSkd)
 
         val properties = Properties().apply { load(project.rootProject.file("local.properties").reader()) }
         return File(properties["sdk.dir"].toString())

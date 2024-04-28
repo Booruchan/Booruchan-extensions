@@ -1,4 +1,4 @@
-import plugin.BooruchanDeployAndroidPlugin
+import com.booruchan.buildsrc.plugin.BooruchanDeployAndroidPlugin
 
 buildscript {
     dependencies {

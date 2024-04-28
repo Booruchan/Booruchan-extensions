@@ -1,4 +1,4 @@
-package entity
+package com.booruchan.buildsrc.entity
 
 import kotlinx.serialization.Serializable
 

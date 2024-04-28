@@ -1,8 +1,8 @@
-package plugin
+package com.booruchan.buildsrc.plugin
 
-import entity.AndroidDeployMetadata
-import entity.AndroidDeployPackage
-import entity.AndroidMetadata
+import com.booruchan.buildsrc.entity.AndroidDeployMetadata
+import com.booruchan.buildsrc.entity.AndroidDeployPackage
+import com.booruchan.buildsrc.entity.AndroidMetadata
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin

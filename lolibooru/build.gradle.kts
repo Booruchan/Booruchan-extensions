@@ -1,5 +1,5 @@
-import plugin.BooruchanExtensionAndroidPlugin
-import task.GenerateCodegenContext
+import com.booruchan.buildsrc.plugin.BooruchanExtensionAndroidPlugin
+import com.booruchan.buildsrc.task.GenerateCodegenContext
 
 plugins {
     `java-library`
