@@ -33,6 +33,7 @@ jobs:
         with:
           name: booruchan-sdk-*
           path: sdk/build/libs/*.jar
+          retention-days: 1
 
   Generate-Artifacts:
     needs: Build
@@ -76,7 +77,7 @@ jobs:
         with:
           name: android-artifacts
           path: build/android/*
-          retention-days: 7
+          retention-days: 1
 
   Publish-Artifacts:
     needs: Generate-Artifacts

@@ -28,6 +28,13 @@ jobs:
       - name: Invoke build
         run: ./gradlew build
 
+      - name: Publish jar artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: booruchan-sdk-*
+          path: sdk/build/libs/*.jar
+          retention-days: 1
+
   Generate-Artifacts:
     needs: Build
     runs-on: ubuntu-latest
@@ -66,10 +73,3 @@ jobs:
 
       - name: Generate deploy metadata file
         run: ./gradlew generateAndroidSignedDeployMetadata
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-artifacts
-          path: build/android/*
-          retention-days: 7
