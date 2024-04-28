@@ -6,6 +6,10 @@ plugins {
 
 allprojects {
     group = "org.booruchan.extensions"
+
+    repositories {
+        maven("https://jitpack.io")
+    }
 }
 
 // Plugin for preparing apks for publishing
