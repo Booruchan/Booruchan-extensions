@@ -1,3 +1,4 @@
+package com.booruchan.buildsrc
 
 object Version {
 

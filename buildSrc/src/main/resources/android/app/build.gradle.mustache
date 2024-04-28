@@ -5,15 +5,15 @@ plugins {
 }
 
 android {
-    namespace '{{SourcePackage}}'
-    compileSdk 33
+    namespace '{{SourcePackageName}}'
+    compileSdk {{ProjectAndroidCompileSdk}}
 
     defaultConfig {
-        applicationId "{{SourcePackage}}"
-        minSdk 24
-        targetSdk 33
-        versionCode 7
-        versionName "1.3"
+        applicationId "{{SourcePackageName}}"
+        minSdk {{ProjectAndroidMinSdk}}
+        targetSdk {{ProjectAndroidTargetSdk}}
+        versionCode {{SourceVersionCode}}
+        versionName "{{SourceVersionName}}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,7 @@ android {
 
 dependencies {
 
-    implementation "com.github.Booruchan.Booruchan-extensions:sdk:609a7cd16f"
+    implementation "com.github.Booruchan.Booruchan-extensions:sdk:653b1b0b71"
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
     implementation "org.jsoup:jsoup:1.17.1"

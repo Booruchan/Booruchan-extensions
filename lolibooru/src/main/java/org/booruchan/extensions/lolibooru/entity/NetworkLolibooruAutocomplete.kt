@@ -25,7 +25,7 @@ data class NetworkLolibooruAutocomplete(
         get() = when (intType) {
             0 -> NetworkTagType.General
             1 -> NetworkTagType.Artist
-            2 -> NetworkTagType.Metadata
+            2, 6 -> NetworkTagType.Metadata
             3 -> NetworkTagType.Copyright
             4 -> NetworkTagType.Character
             else -> NetworkTagType.Other
