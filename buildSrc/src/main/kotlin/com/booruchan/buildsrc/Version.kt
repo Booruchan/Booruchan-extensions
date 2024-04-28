@@ -1,3 +1,5 @@
+package com.booruchan.buildsrc
+
 object Version {
 
     val slf4j = Slf4j(

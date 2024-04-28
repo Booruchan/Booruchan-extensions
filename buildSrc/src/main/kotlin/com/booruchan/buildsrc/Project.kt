@@ -1,3 +1,5 @@
+package com.booruchan.buildsrc
+
 object Project {
     val android = AndroidProject(
         compileSdk = 33,

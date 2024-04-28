@@ -1,9 +1,8 @@
-package task
+package com.booruchan.buildsrc.task
 
-import Project
-import entity.CodegenContext
+import com.booruchan.buildsrc.Project
+import com.booruchan.buildsrc.entity.CodegenContext
 import kotlinx.serialization.encodeToString
-import kotlin.math.pow
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
