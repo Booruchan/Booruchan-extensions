@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    `maven-publish`
+//    `maven-publish`
     kotlin("jvm")
     id("com.github.johnrengelman.shadow") version ("7.1.1")
 }
@@ -24,16 +24,16 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
-afterEvaluate {
-    // Configure the publication to Maven repository
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.booruchan"
-                artifactId = "sdk"
-                version = "0.3.5"
-                from(components["java"])
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    // Configure the publication to Maven repository
+//    publishing {
+//        publications {
+//            create<MavenPublication>("maven") {
+//                groupId = "com.booruchan"
+//                artifactId = "sdk"
+//                version = "0.3.5"
+//                from(components["java"])
+//            }
+//        }
+//    }
+//}
