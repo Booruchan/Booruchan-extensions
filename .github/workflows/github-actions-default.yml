@@ -36,31 +36,6 @@ jobs:
           path: sdk/build/libs/booruchan-sdk*.jar
           retention-days: 1
 
-  Release-Sdk-Artifact:
-    needs: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Collect artifact from the previous job
-        uses: actions/download-artifact@v4
-        with:
-          name: android-artifacts
-
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "release.tar.gz,foo/*.txt"
-          bodyFile: "body.md"
-
-#      - name: Release
-#          uses: actions/create-release@v1
-#            id: create_release
-#          with:
-#            draft: false
-#            prerelease: false
-#            release_name: ${{ steps.version.outputs.version }}
-#            tag_name: ${{ github.ref }}
-#
-
-
   Generate-Artifacts:
     needs: Build
     runs-on: ubuntu-latest
