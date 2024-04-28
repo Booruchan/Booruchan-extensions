@@ -1,5 +1,5 @@
 name: Local branch actions
-run-name: Executing build/generate action on `${{ github.ref_name }}` branch
+run-name: Executing build and generate action on `${{ github.ref_name }}` branch
 
 on:
   push:
@@ -31,8 +31,7 @@ jobs:
       - name: Publish jar artifact
         uses: actions/upload-artifact@v2
         with:
-          name: booruchan-sdk-*
-          path: sdk/build/libs/*.jar
+          path: sdk/build/libs/booruchan-sdk*.jar
           retention-days: 1
 
   Generate-Artifacts:
