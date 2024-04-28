@@ -33,8 +33,12 @@ jobs:
       - name: Publish jar artifact
         uses: actions/upload-artifact@v2
         with:
-          path: sdk/build/libs/booruchan-sdk*.jar
+          name: sdk-artifacts
+          path: sdk/build/libs/*
           retention-days: 1
+
+      - name: Display structure of downloaded files
+        run: ls -R
 
   Generate-Artifacts:
     needs: Build

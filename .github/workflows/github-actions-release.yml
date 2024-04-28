@@ -1,5 +1,5 @@
 name: Release sdk actions
-run-name: Executing build and release on `${{ github.ref_name }}` branch
+run-name: Executing release for `${{ github.ref_name }}` tag
 
 on:
   push:
@@ -31,6 +31,9 @@ jobs:
           path: sdk/build/libs/booruchan-sdk*.jar
           retention-days: 1
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
   Release-Sdk-Artifact:
     needs: Build
     runs-on: ubuntu-latest
@@ -48,5 +51,3 @@ jobs:
         with:
           draft: true
           artifacts: "release.tar.gz,foo/*.txt"
-          bodyFile: "body.md"
-
