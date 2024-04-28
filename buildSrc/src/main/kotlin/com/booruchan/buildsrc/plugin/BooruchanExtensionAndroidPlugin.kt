@@ -77,7 +77,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
                 ?: throw FileNotFoundException("Could not find zipalign. Does your local properties contains android sdk directory")
 
             val apksigner = sdkDirectory.walkTopDown()
-                .filter { it.isFile && it.nameWithoutExtension == "apksigner" }
+                .filter { it.isFile && it.name == apksigner }
                 .sortedBy { it.absolutePath }
                 .onEach { println(it.absolutePath) }
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
