@@ -75,8 +75,13 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
         project.tasks.register<Exec>("assembleSignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
+
+            val apksigner2 = sdkDirectory.walkTopDown().filter { it.isFile && it.nameWithoutExtension == "apksigner" }
+            apksigner2.forEach { println(it.absolutePath) }
+
             val apksigner = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "apksigner" }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
+            println("Selected: $apksigner")
 
             val inputApkPath =
                 "${File.separator}templates${File.separator}android${File.separator}app${File.separator}build${File.separator}outputs${File.separator}apk${File.separator}release${File.separator}app-release-aligned.apk"
@@ -95,8 +100,8 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
                 "--ks", keystore,
                 "--ks-key-alias", keyalias,
                 "--out", outputApk,
-//                "--ks-pass", "pass:$keypass",
-//                "--key-pass", "pass:$keypass",
+                "--ks-pass", "pass:$keypass",
+                "--key-pass", "pass:$keypass",
                 inputApk,
             )
 
