@@ -1,4 +1,9 @@
 import com.booruchan.buildsrc.plugin.BooruchanDeployAndroidPlugin
+buildscript {
+    dependencies {
+        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
+    }
+}
 
 plugins {
     kotlin("jvm") version "1.7.20"
@@ -7,10 +12,6 @@ plugins {
 
 allprojects {
     group = "org.booruchan.extensions"
-
-    repositories {
-        maven("https://jitpack.io")
-    }
 }
 
 // Plugin for preparing apks for publishing
