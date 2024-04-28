@@ -98,7 +98,6 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
                 .onEach { println(it.absolutePath) }
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
-            println("Selected: $apksigner")
 
             val inputApkPath =
                 "${File.separator}templates${File.separator}android${File.separator}app${File.separator}build${File.separator}outputs${File.separator}apk${File.separator}release${File.separator}app-release-aligned.apk"
