@@ -2,7 +2,6 @@ plugins {
     `java-library`
     kotlin("jvm")
     id("com.github.johnrengelman.shadow") version ("7.1.1")
-    `maven-publish`
 }
 
 version = "0.3.5"
