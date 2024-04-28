@@ -76,14 +76,6 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find zipalign. Does your local properties contains android sdk directory")
 
-            val apksigner = sdkDirectory.walkTopDown()
-                .filter { it.isFile && it.name == apksigner }
-                .sortedBy { it.absolutePath }
-                .onEach { println(it.absolutePath) }
-                .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
-                ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
-            println("Selected: $apksigner")
-
             val inputApkPath =
                 "${File.separator}templates${File.separator}android${File.separator}app${File.separator}build${File.separator}outputs${File.separator}apk${File.separator}release${File.separator}app-release-unsigned.apk"
             val inputApk = File(project.buildDir, inputApkPath)
@@ -100,10 +92,11 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
         project.tasks.register<Exec>("assembleSignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
 
-            val apksigner2 = sdkDirectory.walkTopDown().filter { it.isFile && it.nameWithoutExtension == "apksigner" }
-            apksigner2.forEach { println(it.absolutePath) }
-
-            val apksigner = sdkDirectory.walkTopDown().find { it.isFile && it.nameWithoutExtension == "apksigner" }
+            val apksigner = sdkDirectory.walkTopDown()
+                .filter { it.isFile && it.name == apksigner }
+                .sortedBy { it.absolutePath }
+                .onEach { println(it.absolutePath) }
+                .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
             println("Selected: $apksigner")
 
