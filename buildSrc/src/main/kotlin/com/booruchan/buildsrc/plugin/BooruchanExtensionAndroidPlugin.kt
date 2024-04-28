@@ -70,6 +70,7 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
         project.tasks.register<Exec>("assembleAlignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
+            // Find latest zipalign version belongs to compile sdk
             val zipalign = sdkDirectory.walkTopDown()
                 .filter { it.isFile && it.name == zipalign }
                 .sortedBy { it.absolutePath }
@@ -91,11 +92,10 @@ class BooruchanExtensionAndroidPlugin : Plugin<Project> {
 
         project.tasks.register<Exec>("assembleSignedAndroidRelease") {
             val sdkDirectory = getAndroidSdkRootPath(project)
-
+            // Find latest apksigner version belongs to compile sdk
             val apksigner = sdkDirectory.walkTopDown()
                 .filter { it.isFile && it.name == apksigner }
                 .sortedBy { it.absolutePath }
-                .onEach { println(it.absolutePath) }
                 .lastOrNull { it.absolutePath.contains(com.booruchan.buildsrc.Project.android.compileSdk.toString()) }
                 ?: throw FileNotFoundException("Could not find apksigner. Does your local properties contains android sdk directory")
 
